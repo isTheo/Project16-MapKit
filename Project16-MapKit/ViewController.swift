@@ -26,7 +26,9 @@ class ViewController: UIViewController, MKMapViewDelegate {
         let washington = Capital(title: "Washington DC", coordinate: CLLocationCoordinate2D(latitude: 38.895111, longitude: -77.036667), info: "Named after George himself.")
         
         mapView.addAnnotations([london, oslo, paris, rome, washington])
+        setupRightBarButton()
     }
+    
     
     func mapView(_ mapView: MKMapView, viewFor annotation: any MKAnnotation) -> MKAnnotationView? {
         guard annotation is Capital else { return nil }
@@ -59,6 +61,31 @@ class ViewController: UIViewController, MKMapViewDelegate {
         present(ac, animated: true)
     }
     
+    
+    func setupRightBarButton() {
+        let mapTypeIcon = UIImage(systemName: "map")
+        let mapTypeButton = UIBarButtonItem(image: mapTypeIcon, style: .plain, target: self, action: #selector(mapButtonTapped))
+        navigationItem.rightBarButtonItem = mapTypeButton
+    }
+    
+    @objc func mapButtonTapped() {
+        let ac = UIAlertController(title: "Choose a Map Type", message: "", preferredStyle: .actionSheet)
+        ac.addAction(UIAlertAction(title: "Standard", style: .default) { [weak self] _ in
+            self?.mapView.mapType = .standard
+            self?.mapView.showsBuildings = true
+        })
+        ac.addAction(UIAlertAction(title: "Satellite", style: .default) { [weak self] _ in
+            self?.mapView.mapType = .satellite
+            self?.mapView.showsBuildings = true
+        })
+        ac.addAction(UIAlertAction(title: "Hybrid", style: .default) { [weak self] _ in
+            self?.mapView.mapType = .hybrid
+            self?.mapView.showsBuildings = true
+        })
+        
+        
+        present(ac, animated: true)
+    }
     
     
     
